@@ -65,11 +65,13 @@ export async function createTest(name, min_score, userid, questionIds){
 }
 
 export async function linkQuestionToTest(testId, questionIds){
-    for await (const questionId of questionIds){
-        await pool.query(`
-        INSERT INTO Question_in_Test(question_id, test_id)
-        VALUES (?, ?)
-        `,[+questionId,testId]);
+    if(questionIds){
+        for await (const questionId of questionIds){
+            await pool.query(`
+            INSERT INTO Question_in_Test(question_id, test_id)
+            VALUES (?, ?)
+            `,[+questionId,testId]);
+        }
     }
 }
 
@@ -102,6 +104,11 @@ export async function updateLinkedQuestions(testId, questionIds){
 }
 
 export async function deleteTest(id){
+    await pool.query(`
+    DELETE FROM Question_in_Test
+    WHERE test_id = ?
+    `,[id]);
+
     const [result] = await pool.query(`
     DELETE FROM Tests
     WHERE test_id = ?
@@ -156,11 +163,66 @@ export async function createQuestion(question_text, ans1, ans2, ans3, ans4, ans5
 }
 
 export async function deleteQuestion(id){
+    await pool.query(`
+    DELETE FROM Question_in_Test
+    WHERE question_id = ?
+    `,[id]);
+
     const [result] = await pool.query(`
     DELETE FROM Questions
     WHERE question_id = ?
     `,[id]);
 }
+
+//SUBMISSIONS
+
+export async function createSubmission(user_id, test_id, time){
+    const [result] = await pool.query(`
+    INSERT INTO Submissions(user_id, test_id, submission_time)
+    VALUES (?, ?, ?)
+    `,[user_id, test_id, time]);
+    console.log("submission logged with id: " + result.insertId);
+}
+
+export async function logSubmissionResults(user_answers, results, submission_id){
+    const [result] = await pool.query(`
+    UPDATE Submissions
+    SET user_answers=?, results=?
+    WHERE submission_id = ?
+    `,[user_answers, results, submission_id]);
+    console.log("submission updated with id: " + result.insertId);
+}
+
+export async function getSubmission(id)
+{
+    const [result] = await pool.query("SELECT * FROM Submissions WHERE submission_id=?",[id]);
+    return result[0];
+}
+
+export async function getUserSubmissions(id)
+{
+    const [result] = await pool.query("SELECT * FROM Submissions WHERE user_id=?",[id]);
+    return result;
+}
+
+export async function getLatestSubmission(user_id, test_id)
+{
+    const [result] = await pool.query(`
+    SELECT *
+    FROM Submissions
+    WHERE user_id = ? AND test_id = ?
+    ORDER BY submission_id DESC
+    LIMIT 1;
+    `,[user_id, test_id]);
+    return result[0];
+}
+
+export async function getSubmissions(id)
+{
+    const [result] = await pool.query("SELECT * FROM Submissions",[id]);
+    return result;
+}
+
 
 //COOKIES
 

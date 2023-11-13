@@ -9,13 +9,14 @@
 <body>
     <div class="listDiv">
         <ul class="listAll">
-            <form action="/tests/fillout/<%= test.test_id %>" method="post">
+            <form action="/tests/fillout/<%= test.test_id %>" method="post" class="fillOutTest">
                 <li><button>[<%= test.test_name %>]</button></li>
                 <% questionsInTest.forEach(question => { %>
                     <% answers=[question.answer1, question.answer2,question.answer3,question.answer4,question.answer5] %>
                     <li>
                         [<%= question.question_text%>]<br>
                         <div>
+                        <input type="hidden" name="question<%=question.question_id%>pickedAnswer" value="6">
                         <% for(var i=0; i<5; i++) { %>
                             <%  if(answers[i] !== ''){ %>
                                 <input type="radio" id="question<%=question.question_id%>answer<%=i+1%>" name="question<%=question.question_id%>pickedAnswer" value="<%=i+1%>">

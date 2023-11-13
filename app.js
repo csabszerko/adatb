@@ -148,8 +148,11 @@ app.get("/questions/delete/:id", async (req, res) => {
     const user = await getCurrUser(req);
     const id = +req.params.id;
     if(user && checkPerms(user)){
-        await db.deleteQuestion(id);
-        res.redirect("/questions");
+        // try {
+            await db.deleteQuestion(id);
+            res.redirect("/questions");
+        // }
+        // catch (err) {if(err){res.send("can not delete questions that are in tests!")}};
     }else res.redirect("/login");
 });
 
@@ -182,7 +185,8 @@ app.get("/tests", async (req, res)=>{
     const user = await getCurrUser(req);
     if(user){ 
         const tests = await db.getTests();
-        res.render("tests.ejs", {tests,user});
+        const userSubmissions = await db.getUserSubmissions(user.user_id);
+        res.render("tests.ejs", {tests,user,userSubmissions});
     }else{
         res.redirect("/login");
     }
@@ -230,6 +234,9 @@ app.get("/tests/fillout/:id", async (req, res) => {
     if(user){
         const test = await db.getTestById(id);
         const questionsInTest = await db.getQuestionsInTest(id);
+        const datetime = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+        await db.createSubmission(user.user_id, test.test_id, datetime);
         // res.send(questionsInTest);
         res.render("fillOutTest.ejs", {user, id, test, questionsInTest})
     }else res.redirect("/login");
@@ -246,6 +253,28 @@ app.get("/tests/delete/:id", async (req, res) => {
 });
 
 //POST: TESTS
+
+app.post("/tests/fillout/:id", async (req, res) => {
+    const user = await getCurrUser(req);
+    const id = +req.params.id;
+
+    if(user){
+        const data = Object.values(req.body);
+        // res.send(data);x
+        const currentSubmission = await db.getLatestSubmission(user.user_id, id);
+        const questionsInTest = await db.getQuestionsInTest(id);
+        const answers = data.join("");
+        // res.send(answers);
+        var score=0;
+        for (let index = 0; index < questionsInTest.length; index++) {
+            if(questionsInTest[index].correct_answer_index === data[index]) score+=questionsInTest[index].max_score;
+        }
+        
+        await db.logSubmissionResults(answers,score,currentSubmission.submission_id);
+        res.redirect("/tests/"+id);
+        // res.send(data);
+    }else res.redirect("/login");
+});
 
 app.post("/tests/create", async (req, res)=>{
     const user = await getCurrUser(req);

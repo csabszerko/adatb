@@ -121,10 +121,12 @@ button{
     color: #30BCED;
 }
 
-.testQuestionForm {
-    /* margin: inherit;
-    padding: inherit;
-    border: inherit;
-    background: inherit;
-    font-size: inherit; */
+.fillOutTest *{
+    padding: 0;
+    margin: 0;
+}
+
+.fillOutTest {
+    margin: 0;
+    padding: 0;
 }
