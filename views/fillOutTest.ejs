@@ -9,20 +9,24 @@
 <body>
     <div class="listDiv">
         <ul class="listAll">
-            <li><button>[<%= test.test_name %>]</button></li>
-            <% questionsInTest.forEach(question => { %>
-                <% answers=[question.answer1, question.answer2,question.answer3,question.answer4,question.answer5] %>
-                <li>
-                    [<%= question.question_text%>]<br>
-                    <% for(var i=0; i<5; i++) { %>
-                        <%  if(answers[i] !== ''){ %>
-                            <input type="radio" id="question<%=question.question_id%>answer<%=i+1%>" name="pickedAnswer" value="<%=i+1%>">
-                            <label for="question<%=question.question_id%>answer<%=i+1%>"><%= answers[i] %></label>
+            <form action="/tests/fillout/<%= test.test_id %>" method="post">
+                <li><button>[<%= test.test_name %>]</button></li>
+                <% questionsInTest.forEach(question => { %>
+                    <% answers=[question.answer1, question.answer2,question.answer3,question.answer4,question.answer5] %>
+                    <li>
+                        [<%= question.question_text%>]<br>
+                        <div>
+                        <% for(var i=0; i<5; i++) { %>
+                            <%  if(answers[i] !== ''){ %>
+                                <input type="radio" id="question<%=question.question_id%>answer<%=i+1%>" name="question<%=question.question_id%>pickedAnswer" value="<%=i+1%>">
+                                <label for="question<%=question.question_id%>answer<%=i+1%>"><%= answers[i] %></label>
+                            <% } %>
                         <% } %>
-                    <% } %>
-                </li>
-            <% }); %> 
-            <li><button>[submit]</button></li>
+                        </div>
+                    </li>
+                <% }); %> 
+                <li><input type="submit" value="[submit]"></li>
+            </form>
         </ul>
     </div>
     <div class="topright">
