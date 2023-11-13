@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href='/style.css'>
+    <title>edit the question</title>
+</head>
+<body>
+    <div class="container">
+        <form action="/questions/edit/<%=id%>" method="POST">
+            <input type="text" id="questionTextInput" name="question_text" placeholder="[question text]" value="<%=question.question_text %>" required>
+            <input type="number" id="max_scoreInput" name="max_score" placeholder="[max score]" value="<%=question.max_score %>" required>
+            <ul id="answers">
+                <li class="answer">
+                    <input type="text" id="ans1Input" name="answer1" placeholder="[answer here]" value="<%=question.answer1 %>">
+                    <input type="radio" id="pickCorrect1" name="correct_answer_index" value="1" <% if(question.correct_answer_index==1){ %>checked<% } %>>
+                    <label for="pickCorrect1">[select]</label>
+                </li>
+                <li class="answer">
+                    <input type="text" id="ans2Input" name="answer2" placeholder="[answer here]" value="<%=question.answer2 %>">
+                    <input type="radio" id="pickCorrect2" name="correct_answer_index" value="2" <% if(question.correct_answer_index==2){ %>checked<% } %>>
+                    <label for="pickCorrect2">[select]</label>
+                </li>
+                <li>
+                    <input type="text" id="ans3Input" name="answer3" placeholder="[answer here]" value="<%=question.answer3 %>">
+                    <input type="radio" id="pickCorrect3" name="correct_answer_index" value="3" <% if(question.correct_answer_index==3){ %>checked<% } %>>
+                    <label for="pickCorrect3">[select]</label>
+                </li>
+                <li>
+                    <input type="text" id="ans4Input" name="answer4" placeholder="[answer here]" value="<%=question.answer4 %>">
+                    <input type="radio" id="pickCorrect4" name="correct_answer_index" value="4" <% if(question.correct_answer_index==4){ %>checked<% } %>>
+                    <label for="pickCorrect4">[select]</label>
+                </li>
+                <li>
+                    <input type="text" id="ans5Input" name="answer5" placeholder="[answer here]" value="<%=question.answer5 %>">
+                    <input type="radio" id="pickCorrect5" name="correct_answer_index" value="5" <% if(question.correct_answer_index==5){ %>checked<% } %>>
+                    <label for="pickCorrect5">[select]</label>
+                </li>
+            </ul>
+            <div>
+                <button type="submit">[save]</button>
+            </div>
+        </form>
+    </div>
+    <div class="topright">
+        <button onclick='window.location.href ="/questions/<%=id%>"'>[back]</button>
+        permissions: <%= user.role %>
+        <button onclick='window.location.href ="/logout"' id="logoutButton">[log out]</button>
+    </div>
+</body>
+</html>

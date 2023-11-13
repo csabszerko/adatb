@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style.css">
+    <title>questions</title>
+</head>
+<body>
+    <div class="listDiv">
+                <ul class="listAll">
+                    <li><button>[<%= question.question_text %>]</button></li>
+                    <li>maximum score: <%= question.max_score %></li>
+                    <li>answers:</li>
+                    <% var i = 1 %>
+                    <% answers.forEach(answer => { %>
+                        <li><%= answer %><% if(i==question.correct_answer_index) {%>
+                                <% if(answer == ''){ %>
+                                    blank answer (you should change it)
+                                <%}%>
+                            [correct answer]
+                            <%}%>
+                        </li>
+                        <% i++ %>
+                    <%  }); %>
+                    <li>
+                        <% if(user.role === "admin" || user.role === "teacher") { %>
+                            <button onclick='window.location.href ="/questions/edit/<%= question.question_id %>"'>[edit question]</button>
+                            <button onclick='window.location.href ="/questions/delete/<%= question.question_id %>"'>[delete question]</button>
+                        <% } %>
+                    </li>
+                </ul>
+
+    </div>
+    <div class="topright">
+        <button onclick='window.location.href ="/questions"'>[back]</button>
+        <!-- <% if(user.role === "admin" || user.role === "teacher") { %>
+                <button onclick='window.location.href ="/tests/create"'>[create test]</button>
+        <% } %> -->
+        permissions: <%= user.role %>
+        <button onclick='window.location.href ="/logout"' id="logoutButton">[log out]</button>
+    </div>
+</body>
+</html>

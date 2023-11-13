@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href='/style.css'>
+    <title>edit the test</title>
+</head>
+<body>
+    <div class="container">
+        <form action="/tests/edit/<%=id%>" method="POST">
+            <input type="text" id="testnameInput" name="newname" placeholder="[name of test]" value="<%=test.test_name %>" required>
+            <input type="text" id="minscoreInput" name="min_score" placeholder="[minimum score]" value="<%= test.min_score %>" required>
+            <ul>
+                <% var i=0; %>
+                <% questions.forEach(question => { %>
+                    <% i++; %>
+                    <li>
+                        <input type="checkbox" id="question<%=i%>" name="assignedQuestions" value="<%=question.question_id%>"
+                        <% if(questionsInTest.includes(question.question_id)) {%>
+                            checked
+                        <% } %>>
+                        <label for="question<%=i%>"><%= question.question_text.substring(0,50)%><% if(question.question_text.length>50){%> ...<% }%></label>
+                    </li>
+                <% }); %>
+            </ul>
+            <div>
+                <button type="submit">save</button>
+            </div>
+        </form>
+    </div>
+    <div class="topright">
+        <button onclick='window.location.href ="/tests/<%=id%>"'>[back]</button>
+        permissions: <%= user.role %>
+        <button onclick='window.location.href ="/logout"' id="logoutButton">[log out]</button>
+    </div>
+</body>
+</html>

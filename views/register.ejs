@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style.css">
+    <title>make an account</title>
+</head>
+<body>
+    <div class="container">
+        <form action="/register" method="POST">
+            <input type="text" id="usernameInput" name="username" placeholder="[username]" maxlength="20" required>
+
+            <input type="text" id="nameInput" name="name" placeholder="[real name]" required>
+
+            <input type="password" id="passwordInput" name="password" placeholder="[password]" required>
+            <input type="password" id="confirmPasswordInput" name="confirmPassword" placeholder="[confirm password]" required>
+            
+            <div class="pickRole">
+                <label for="pickStudent">student</label>
+                <input type="radio" id="pickStudent" name="role" value="student" checked>
+                <label for="pickTeacher">teacher</label>
+                <input type="radio" id="pickTeacher" name="role" value="teacher">
+            </div>
+            <div>
+                <input type="button" value="[log in]" onclick='window.location.href ="/login"'>
+                <input type="submit" value="[make account]">
+            </div>
+        </form>
+    </div>
+</body>
+</html>

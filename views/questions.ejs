@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style.css">
+    <title>questions</title>
+</head>
+<body>
+    <div class="listDiv">
+        <ul>
+            <% questions.forEach(question => { %>
+                <li>
+                    <button class="questionNameButton" onclick="window.location.href ='/questions/<%=question.question_id%>'">
+                        [<%= question.question_text.substring(0,50)%><% if(question.question_text.length>50){%> ...<% }%>]
+                    </button>
+                </li>
+            <% }); %> 
+        </ul>
+    </div>
+    <div class="topright">
+        <% if(user.role === "admin" || user.role === "teacher") { %>
+                <button onclick='window.location.href ="/questions/create"'>[create question]</button>
+        <% } %>
+        <% if(user.role === "admin" || user.role === "teacher") { %>
+            <button onclick='window.location.href ="/tests"'>[back]</button>
+        <% } %>
+        permissions: <%= user.role %>
+        <button onclick='window.location.href ="/logout"' id="logoutButton">[log out]</button>
+    </div>
+</body>
+</html>

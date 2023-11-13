@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style.css">
+    <title>tests</title>
+</head>
+<body>
+    <div class="listDiv">
+        <ul>
+            <% tests.forEach(test => { %>
+                <li>
+                    <button class="testNameButton" onclick="window.location.href ='/tests/<%=test.test_id%>'">
+                        [<%= test.test_name.substring(0,50)%><% if(test.test_name.length>50){%> ...<% }%>]
+                    </button>
+                    <!-- created at: <%= String(test.creation_date.toISOString().split('T')[0]); %>
+                    created by: id(<%= test.created_by %>)
+                    minimum score: <%= test.min_score %> -->
+                </li>
+            <% }); %> 
+        </ul>
+    </div>
+    <div class="topright">
+        <% if(user.role === "admin" || user.role === "teacher") { %>
+                <button onclick='window.location.href ="/tests/create"'>[create test]</button>
+        <% } %>
+        <% if(user.role === "admin" || user.role === "teacher") { %>
+            <button onclick='window.location.href ="/questions/"'>[questions]</button>
+        <% } %>
+        permissions: <%= user.role %>
+        <button onclick='window.location.href ="/logout"' id="logoutButton">[log out]</button>
+    </div>
+</body>
+</html>
