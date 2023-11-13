@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style.css">
+    <title>tests</title>
+</head>
+<body>
+    <div class="listDiv">
+        <ul class="listAll">
+            <li><button>[<%= test.test_name %>]</button></li>
+            <% questionsInTest.forEach(question => { %>
+                <% answers=[question.answer1, question.answer2,question.answer3,question.answer4,question.answer5] %>
+                <li>
+                    [<%= question.question_text%>]<br>
+                    <% for(var i=0; i<5; i++) { %>
+                        <%  if(answers[i] !== ''){ %>
+                            <input type="radio" id="question<%=question.question_id%>answer<%=i+1%>" name="pickedAnswer" value="<%=i+1%>">
+                            <label for="question<%=question.question_id%>answer<%=i+1%>"><%= answers[i] %></label>
+                        <% } %>
+                    <% } %>
+                </li>
+            <% }); %> 
+            <li><button>[submit]</button></li>
+        </ul>
+    </div>
+    <div class="topright">
+        <button onclick='window.location.href ="/tests/<%=id%>"'>[back]</button>
+        <!-- <% if(user.role === "admin" || user.role === "teacher") { %>
+                <button onclick='window.location.href ="/tests/create"'>[create test]</button>
+        <% } %> -->
+        permissions: <%= user.role %>
+        <button onclick='window.location.href ="/logout"' id="logoutButton">[log out]</button>
+    </div>
+</body>
+</html>

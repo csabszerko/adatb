@@ -17,7 +17,7 @@
                     <% i++; %>
                     <li>
                         <input type="checkbox" id="question<%=i%>" name="assignedQuestions" value="<%=question.question_id%>"
-                        <% if(questionsInTest.includes(question.question_id)) {%>
+                        <% if(questionsInTest.map(q => q.question_id).includes(question.question_id)) {%>
                             checked
                         <% } %>>
                         <label for="question<%=i%>"><%= question.question_text.substring(0,50)%><% if(question.question_text.length>50){%> ...<% }%></label>

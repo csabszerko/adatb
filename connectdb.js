@@ -80,9 +80,16 @@ export async function deleteLinkedQuestions(id){
     `,[id]);
 }
 
-export async function getQuestionsForTest(id){
-    const [result] = await pool.query("SELECT * FROM Question_in_Test WHERE test_id = ?",[id]);
-    return result.map(ids => ids.question_id);
+export async function getQuestionsInTest(id){
+    const [result] = await pool.query(
+    `SELECT Questions.question_id, Questions.question_text, Questions.correct_answer_index, 
+    Questions.answer1, Questions.answer2, Questions.answer3, Questions.answer4, Questions.answer5, Questions.max_score
+    FROM Tests
+    JOIN Question_in_Test ON Tests.test_id = Question_in_Test.test_id
+    JOIN Questions ON Question_in_Test.question_id = Questions.question_id
+    WHERE Tests.test_id =?`,[id]
+    );
+    return result;
 }
 
 export async function updateLinkedQuestions(testId, questionIds){

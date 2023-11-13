@@ -215,10 +215,23 @@ app.get("/tests/edit/:id", async (req, res) => {
 
     if(user && checkPerms(user)){
         const test = await db.getTestById(id);
-        const questionsInTest = await db.getQuestionsForTest(id);
+        const questionsInTest = await db.getQuestionsInTest(id);
         // res.send(questionsInTest);
         const questions = await db.getQuestions();
+        // console.log(questionsInTest, "INNNENTOL", questions);
         res.render("editTest.ejs", {user, id, test, questions, questionsInTest})
+    }else res.redirect("/login");
+});
+
+app.get("/tests/fillout/:id", async (req, res) => {
+    const user = await getCurrUser(req);
+    const id = +req.params.id;
+
+    if(user){
+        const test = await db.getTestById(id);
+        const questionsInTest = await db.getQuestionsInTest(id);
+        // res.send(questionsInTest);
+        res.render("fillOutTest.ejs", {user, id, test, questionsInTest})
     }else res.redirect("/login");
 });
 
