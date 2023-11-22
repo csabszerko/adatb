@@ -109,6 +109,11 @@ export async function deleteTest(id){
     WHERE test_id = ?
     `,[id]);
 
+    await pool.query(`
+    DELETE FROM Submissions
+    WHERE test_id = ?
+    `,[id]);
+
     const [result] = await pool.query(`
     DELETE FROM Tests
     WHERE test_id = ?
@@ -184,12 +189,12 @@ export async function createSubmission(user_id, test_id, time){
     console.log("submission logged with id: " + result.insertId);
 }
 
-export async function logSubmissionResults(user_answers, results, submission_id){
+export async function logSubmissionResults(results, submission_id){
     const [result] = await pool.query(`
     UPDATE Submissions
-    SET user_answers=?, results=?
+    SET results=?
     WHERE submission_id = ?
-    `,[user_answers, results, submission_id]);
+    `,[results, submission_id]);
     console.log("submission updated with id: " + result.insertId);
 }
 
@@ -217,12 +222,21 @@ export async function getLatestSubmission(user_id, test_id)
     return result[0];
 }
 
-export async function getSubmissions(id)
+export async function getSubmissions()
 {
-    const [result] = await pool.query("SELECT * FROM Submissions",[id]);
+    const [result] = await pool.query("SELECT * FROM Submissions");
     return result;
 }
 
+//ANSWERS
+
+export async function storeSubmissionAnswers(submission_id, question_id, chosen_answer_index){
+    const [result] = await pool.query(`
+    INSERT INTO UserAnswers(submission_id, question_id, chosen_answer_index)
+    VALUES (?, ?, ?)
+    `,[submission_id, question_id, chosen_answer_index]);
+    console.log("answers logged with id: " + result.insertId);
+}
 
 //COOKIES
 

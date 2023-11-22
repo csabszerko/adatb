@@ -259,18 +259,22 @@ app.post("/tests/fillout/:id", async (req, res) => {
     const id = +req.params.id;
 
     if(user){
-        const data = Object.values(req.body);
-        // res.send(data);x
+        const answers = Object.values(req.body);
+        // res.send(answers);
         const currentSubmission = await db.getLatestSubmission(user.user_id, id);
         const questionsInTest = await db.getQuestionsInTest(id);
-        const answers = data.join("");
-        // res.send(answers);
+        // res.send(questionsInTest[0]);
+        // res.send(answers[0]);
         var score=0;
-        for (let index = 0; index < questionsInTest.length; index++) {
-            if(questionsInTest[index].correct_answer_index === data[index]) score+=questionsInTest[index].max_score;
+        for (var index = 0; index < questionsInTest.length; index++) {
+            console.log("correct answer index: " + questionsInTest[index].correct_answer_index);
+            console.log("user answer index: " + answers[index]);
+            if(questionsInTest[index].correct_answer_index == answers[index]) score+=questionsInTest[index].max_score;
+            // console.log(currentSubmission.submission_id, questionsInTest[index].question_id, answers[index]);
+            await db.storeSubmissionAnswers(currentSubmission.submission_id, questionsInTest[index].question_id, answers[index]);
         }
-        
-        await db.logSubmissionResults(answers,score,currentSubmission.submission_id);
+        // res.send(String(score));
+        await db.logSubmissionResults(score,currentSubmission.submission_id);
         res.redirect("/tests/"+id);
         // res.send(data);
     }else res.redirect("/login");
