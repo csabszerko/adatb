@@ -5,6 +5,9 @@ import * as hashMan from './hashmanager.js';
 
 import cookieParser from 'cookie-parser';
 import e from 'express';
+import moment from 'moment-timezone';
+
+const timezone = 'Europe/Budapest';
 
 const app = express();
 
@@ -234,7 +237,10 @@ app.get("/tests/fillout/:id", async (req, res) => {
     if(user){
         const test = await db.getTestById(id);
         const questionsInTest = await db.getQuestionsInTest(id);
-        const datetime = new Date().toISOString().slice(0, 19).replace('T', ' ');
+        // const datetime = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+        const datetime = moment().tz(timezone).toISOString().slice(0, 19).replace('T', ' ');
+        // res.send(datetime);
 
         await db.createSubmission(user.user_id, test.test_id, datetime);
         // res.send(questionsInTest);
@@ -263,8 +269,6 @@ app.post("/tests/fillout/:id", async (req, res) => {
         // res.send(answers);
         const currentSubmission = await db.getLatestSubmission(user.user_id, id);
         const questionsInTest = await db.getQuestionsInTest(id);
-        // res.send(questionsInTest[0]);
-        // res.send(answers[0]);
         var score=0;
         for (var index = 0; index < questionsInTest.length; index++) {
             console.log("correct answer index: " + questionsInTest[index].correct_answer_index);

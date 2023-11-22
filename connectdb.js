@@ -2,6 +2,10 @@ import mysql from 'mysql2';
 
 import dotenv from 'dotenv';
 
+import moment from 'moment-timezone';
+
+const timezone = 'Europe/Budapest';
+
 dotenv.config()
 
 const pool = mysql.createPool({
@@ -54,11 +58,11 @@ export async function getTestById(id)
 }
 
 export async function createTest(name, min_score, userid, questionIds){
-    const date = new Date();
+    const date = moment().tz(timezone).toISOString().split('T')[0];
     const [result] = await pool.query(`
     INSERT INTO Tests(test_name, creation_date, created_by, min_score)
     VALUES (?, ?, ?, ?)
-    `,[name, String(date.toISOString().split('T')[0]), userid, min_score]);
+    `,[name, date, userid, min_score]);
     await linkQuestionToTest(result.insertId, questionIds);
     console.log("test created with id: " + result.insertId);
     return getTestById(result.insertId);
@@ -109,6 +113,8 @@ export async function deleteTest(id){
     WHERE test_id = ?
     `,[id]);
 
+    await deleteUserAnswers(id);
+
     await pool.query(`
     DELETE FROM Submissions
     WHERE test_id = ?
@@ -128,6 +134,20 @@ export async function editTest(id, name, min_score, questionIds){
     `,[name, min_score, id]);
     updateLinkedQuestions(id, questionIds);
 }
+
+export async function deleteUserAnswers(id)
+{
+    const [result] = await pool.query("SELECT * FROM Submissions WHERE test_id=?",[id]);
+
+    for await (const submission of result){
+        await pool.query(`
+        DELETE FROM UserAnswers
+        WHERE submission_id = ?
+        `,[submission.submission_id]);
+    }
+    
+}
+
 
 //QUESTIONS
 
@@ -172,6 +192,11 @@ export async function deleteQuestion(id){
     DELETE FROM Question_in_Test
     WHERE question_id = ?
     `,[id]);
+
+    await pool.query(`
+        DELETE FROM UserAnswers
+        WHERE question_id = ?
+        `,[id]);
 
     const [result] = await pool.query(`
     DELETE FROM Questions

@@ -10,7 +10,7 @@
     <div class="listDiv">
         <ul class="listAll">
             <li><button>[<%= test.test_name %>]</button></li>
-            <li>created at: <%= String(test.creation_date.toISOString().split('T')[0]); %></li>
+            <li>created at: <%= test.creation_date.toLocaleDateString('hu-HU'); %></li>
             <li>created by: <%= creator.username %></li>
             <li>minimum score: <%= test.min_score %></li>
             <li>
