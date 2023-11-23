@@ -212,7 +212,8 @@ app.get("/tests/:id", async (req, res) => {
         // console.log(id);
         const test = await db.getTestById(id);
         const creator = await db.getUserById(test.created_by);
-        res.render("singleTest.ejs", {test, user, creator});
+        const userSubmissions = await db.getUserSubmissions(user.user_id);
+        res.render("singleTest.ejs", {test, user, creator, userSubmissions});
     } else res.redirect("/login");
 });
 

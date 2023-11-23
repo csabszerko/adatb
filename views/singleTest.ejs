@@ -13,6 +13,15 @@
             <li>created at: <%= test.creation_date.toLocaleDateString('hu-HU'); %></li>
             <li>created by: <%= creator.username %></li>
             <li>minimum score: <%= test.min_score %></li>
+            <% var filled = false; var bestscore=0;%>
+                <li>
+                    <% userSubmissions.forEach(submission => { %>
+                        <% if(submission.test_id == test.test_id) { %> 
+                            <% filled=true %>
+                            <% if(submission.results > bestscore) {bestscore = submission.results} %>
+                        <% } %>
+                    <% }) %>
+                    <%= (filled?"your results: ["+bestscore+"/"+test.min_score+"], "+(bestscore>=test.min_score?"passed":"failed"):"no results yet") %>
             <li>
                 <button onclick='window.location.href ="/tests/fillout/<%= test.test_id %>"'>[fill out test]</button>
                 <% if(user.role === "admin" || user.role === "teacher") { %>
@@ -20,6 +29,16 @@
                     <button onclick='window.location.href ="/tests/delete/<%= test.test_id %>"'>[delete test]</button>
                 <% } %>
             </li>
+        </ul>
+        <ul class="submissionsList">
+            <% if(filled) { %>
+                <li>Your submissions:</li>
+                <% userSubmissions.forEach(submission => { %>
+                    <% if(submission.test_id === test.test_id) { %>
+                        <li><%= submission.submission_time.toLocaleString('hu-HU',{timeZone: 'Europe/Budapest'}) %>, result: [<%= submission.results %>/<%= test.min_score %>]</li>
+                    <% } %>
+                <% }); %>
+            <% } %>
         </ul>
     </div>
     <div class="topright">

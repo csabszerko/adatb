@@ -70,6 +70,10 @@ form input[type="submit"], form input[type="button"], button, label{
     cursor: text;
 }
 
+input[type="submit"]{
+    color: #30BCED;
+}
+
 .topright{
     position: fixed;
     top: 0;
@@ -116,7 +120,11 @@ div{padding: 0;}
 
 .listAll li:not(:first-child):not(:last-child) {
     margin-left: 20px; /* Adjust the margin as needed */
-  }
+}
+
+.submissionsList li:not(:first-child){
+    margin-left: 20px;
+}
 button{
     color: #30BCED;
 }

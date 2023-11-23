@@ -10,10 +10,18 @@
     <div class="listDiv">
         <ul>
             <% tests.forEach(test => { %>
+                <% var filled = false; var bestscore=0;%>
                 <li>
                     <button class="testNameButton" onclick="window.location.href ='/tests/<%=test.test_id%>'">
                         [<%= test.test_name.substring(0,50)%><% if(test.test_name.length>50){%> ...<% }%>]
                     </button>
+                    <% userSubmissions.forEach(submission => { %>
+                        <% if(submission.test_id == test.test_id) { %> 
+                            <% filled=true %>
+                            <% if(submission.results > bestscore) {bestscore = submission.results} %>
+                        <% } %>
+                    <% }) %>
+                    <%= (filled?"["+bestscore+"/"+test.min_score+"], "+(bestscore>=test.min_score?"passed":"failed"):"no results yet") %>
                     <!-- created at: <%= String(test.creation_date.toISOString().split('T')[0]); %>
                     created by: id(<%= test.created_by %>)
                     minimum score: <%= test.min_score %> -->
