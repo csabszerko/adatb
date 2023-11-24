@@ -11,7 +11,7 @@
         <ul class="listAll">
             <li><button>[<%= test.test_name %>]</button></li>
             <li>created at: <%= test.creation_date.toLocaleDateString('hu-HU'); %></li>
-            <li>created by: <%= creator.username %></li>
+            <li>created by: <%= creator.name %>(<%= creator.username %>)</li>
             <li>minimum score: <%= test.min_score %></li>
             <% var filled = false; var bestscore=0;%>
                 <li>
@@ -27,6 +27,7 @@
                 <% if(user.role === "admin" || user.role === "teacher") { %>
                     <button onclick='window.location.href ="/tests/edit/<%= test.test_id %>"'>[edit test]</button>
                     <button onclick='window.location.href ="/tests/delete/<%= test.test_id %>"'>[delete test]</button>
+                    <button onclick='window.location.href ="/tests/<%= test.test_id %>/submissions/"'>[view all submissions]</button>
                 <% } %>
             </li>
         </ul>

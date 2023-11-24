@@ -247,9 +247,15 @@ export async function getLatestSubmission(user_id, test_id)
     return result[0];
 }
 
-export async function getSubmissions()
+export async function getSubmissionsForTest(id)
 {
-    const [result] = await pool.query("SELECT * FROM Submissions");
+    const [result] = await pool.query(`
+    SELECT Users.username, Users.name, Submissions.submission_time, Submissions.results
+    FROM Users
+    JOIN Submissions ON Users.user_id = Submissions.user_id
+    WHERE Submissions.test_id = ?
+    ORDER BY Users.username ASC;
+    `,[id]);
     return result;
 }
 

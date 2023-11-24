@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style.css">
+    <title>submissions</title>
+</head>
+<body>
+    <div class="listDiv">
+        <ul class="submissionsList">
+                <li><button>[submissions for test (<%= test.test_name %>)]</button></li>
+                <% submissions.forEach(submission => { %>
+                    <li><%=submission.name%>(<%= submission.username %>), <%= submission.submission_time.toLocaleString('hu-HU',{timeZone: 'Europe/Budapest'}) %>, result: [<%= submission.results %>/<%= test.min_score %>], <%=submission.results>=test.min_score?"passed":"failed"%></li>
+                <% }); %>
+        </ul>
+    </div>
+    <div class="topright">
+        <button onclick='window.location.href ="/tests/<%=id%>"'>[back]</button>
+        <!-- <% if(user.role === "admin" || user.role === "teacher") { %>
+                <button onclick='window.location.href ="/tests/create"'>[create test]</button>
+        <% } %> -->
+        permissions: <%= user.role %>
+        <button onclick='window.location.href ="/logout"' id="logoutButton">[log out]</button>
+    </div>
+</body>
+</html>
