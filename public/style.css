@@ -115,7 +115,7 @@ div{padding: 0;}
 }
 
 .listDiv{
-    width: 50%;
+    width: 60%;
 }
 
 .listAll li:not(:first-child):not(:last-child) {

@@ -9,14 +9,14 @@
 <body>
     <div class="listDiv">
         <ul class="submissionsList">
-                <li><button>[submissions for test (<%= test.test_name %>)]</button><button onclick='window.location.href ="/tests/<%=id%>/submissions/best"'>[show best only]</button></li>
-                <% submissions.forEach(submission => { %>
-                    <li><%=submission.name%>(<%= submission.username %>), <%= submission.submission_time.toLocaleString('hu-HU',{timeZone: 'Europe/Budapest'}) %>, result: [<%= submission.results %>/<%= test.min_score %>], <%=submission.results>=test.min_score?"passed":"failed"%></li>
+                <li><button>[submissions for test (<%= test.test_name %>)]</button><button onclick='window.location.href ="/tests/<%=id%>/submissions/"'>[show all]</button></li>
+                <% bestResults.forEach(submission => { %>
+                    <li><%=submission.name%>(<%= submission.username %>), <%= submission.submission_time.toLocaleString('hu-HU',{timeZone: 'Europe/Budapest'}) %>, result: [<%= submission.highest_result %>/<%= test.min_score %>], <%=submission.highest_result>=test.min_score?"passed":"failed"%></li>
                 <% }); %>
         </ul>
     </div>
     <div class="topright">
-        <button onclick='window.location.href ="/tests/<%=id%>"'>[back]</button>
+        <button onclick='window.location.href ="/tests/<%=id%>/submissions"'>[back]</button>
         <!-- <% if(user.role === "admin" || user.role === "teacher") { %>
                 <button onclick='window.location.href ="/tests/create"'>[create test]</button>
         <% } %> -->

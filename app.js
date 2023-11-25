@@ -217,6 +217,21 @@ app.get("/tests/:id", async (req, res) => {
     } else res.redirect("/login");
 });
 
+app.get("/tests/:id/submissions/best", async (req, res) => {
+    const user = await getCurrUser(req);
+    const id = +req.params.id;
+
+    if(user && checkPerms(user)){
+        // const submissions = await db.getSubmissionsForTest(id);
+        const bestResults = await db.getBestResults(id);
+        // res.send(bestResults);
+        const test = await db.getTestById(id);
+        // res.send(questionsInTest);
+        // console.log(questionsInTest, "INNNENTOL", questions);
+        res.render("viewBestSubmissions.ejs", {user, id, bestResults, test})
+    }else res.redirect("/login");
+});
+
 app.get("/tests/:id/submissions", async (req, res) => {
     const user = await getCurrUser(req);
     const id = +req.params.id;

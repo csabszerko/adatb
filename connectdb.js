@@ -254,7 +254,30 @@ export async function getSubmissionsForTest(id)
     FROM Users
     JOIN Submissions ON Users.user_id = Submissions.user_id
     WHERE Submissions.test_id = ?
-    ORDER BY Users.username ASC;
+    ORDER BY Users.name ASC;
+    `,[id]);
+    return result;
+}
+
+export async function getBestResults(id){
+    const [result] = await pool.query(`
+    SELECT
+    username,
+    name,
+    highest_result,
+    submission_time
+    FROM (
+        SELECT
+            Users.username,
+            Users.name,
+            Submissions.results AS highest_result,
+            Submissions.submission_time,
+            ROW_NUMBER() OVER (PARTITION BY Submissions.user_id ORDER BY Submissions.results DESC, Submissions.submission_time) AS row_num
+        FROM Submissions
+        JOIN Users ON  Submissions.user_id = Users.user_id
+        WHERE Submissions.test_id = ?
+    ) AS RankedSubmissions
+    WHERE row_num = 1 ORDER BY name;
     `,[id]);
     return result;
 }
