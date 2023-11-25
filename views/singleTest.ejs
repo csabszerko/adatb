@@ -24,10 +24,10 @@
                 <%= (filled?"your results: ["+bestscore+"/"+test.min_score+"], "+(bestscore>=test.min_score?"passed":"failed"):"no results yet") %>
             </li>
             <li>
-                your average score: <%= parseFloat(average_score.average_score).toFixed(2); %>
+                <%= (filled?"your average score: " + parseFloat(average_score.average_score).toFixed(2):"")%>
             </li>
             <li>
-                your number of attempts: <%= attempts.submission_count; %>
+                <%= (filled?"your number of attempts: " + attempts.submission_count:"")%>
             </li>
             <li>
                 <button onclick='window.location.href ="/tests/fillout/<%= test.test_id %>"'>[fill out test]</button>

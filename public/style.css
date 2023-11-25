@@ -118,6 +118,7 @@ div{padding: 0;}
     width: 60%;
 }
 
+
 .listAll li:not(:first-child):not(:last-child) {
     margin-left: 20px; /* Adjust the margin as needed */
 }
@@ -137,4 +138,19 @@ button{
 .fillOutTest {
     margin: 0;
     padding: 0;
+}
+
+input[type="radio"] {
+    display: none;
+}
+input[type="radio"]:checked + label {
+    color: #EC9A29;
+}
+
+input[type="radio"]:checked + label::before {
+    content: "[";
+}
+
+input[type="radio"]:checked + label::after {
+    content: "]";
 }

@@ -92,7 +92,7 @@ app.post("/register", async (req, res)=>{
             res.redirect("/login")
         }
         catch (err) {
-            res.send("duplicate usernames");
+            res.send("Username taken");
         }
         
     }else{
