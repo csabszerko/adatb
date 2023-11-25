@@ -213,7 +213,9 @@ app.get("/tests/:id", async (req, res) => {
         const test = await db.getTestById(id);
         const creator = await db.getUserById(test.created_by);
         const userSubmissions = await db.getUserSubmissions(user.user_id);
-        res.render("singleTest.ejs", {test, user, creator, userSubmissions});
+        const average_score = await db.getAvgScoreForTest(user.user_id, id);
+        const attempts = await db.getSubmissionCountForTest(user.user_id, id);
+        res.render("singleTest.ejs", {test, user, creator, userSubmissions, average_score, attempts});
     } else res.redirect("/login");
 });
 

@@ -247,6 +247,39 @@ export async function getLatestSubmission(user_id, test_id)
     return result[0];
 }
 
+export async function getSubmissionCountForTest(user_id, test_id)
+{
+    const [result] = await pool.query(`
+    SELECT
+        Tests.test_id,
+        Tests.test_name,
+        COUNT(Submissions.submission_id) AS submission_count
+    FROM Tests
+    LEFT JOIN Submissions ON Tests.test_id = Submissions.test_id
+    WHERE Submissions.user_id = ? AND Tests.test_id = ?
+    GROUP BY Tests.test_id, Tests.test_name;
+    `,[user_id, test_id]);
+    // console.log(result);
+    return result[0];
+}
+
+export async function getAvgScoreForTest(user_id, test_id)
+{
+    const [result] = await pool.query(`
+    SELECT
+        Users.user_id,
+        Users.username,
+        AVG(Submissions.results) AS average_score,
+        COUNT(Submissions.submission_id) AS submission_count
+    FROM Users
+    LEFT JOIN Submissions ON Users.user_id = Submissions.user_id
+    WHERE Users.user_id = ? AND Submissions.test_id = ?
+    GROUP BY Users.user_id, Users.username;
+    `,[user_id, test_id]);
+    return result[0];
+}
+
+
 export async function getSubmissionsForTest(id)
 {
     const [result] = await pool.query(`

@@ -14,14 +14,21 @@
             <li>created by: <%= creator.name %>(<%= creator.username %>)</li>
             <li>minimum score: <%= test.min_score %></li>
             <% var filled = false; var bestscore=0;%>
-                <li>
-                    <% userSubmissions.forEach(submission => { %>
-                        <% if(submission.test_id == test.test_id) { %> 
-                            <% filled=true %>
-                            <% if(submission.results > bestscore) {bestscore = submission.results} %>
-                        <% } %>
-                    <% }) %>
-                    <%= (filled?"your results: ["+bestscore+"/"+test.min_score+"], "+(bestscore>=test.min_score?"passed":"failed"):"no results yet") %>
+            <li>
+                <% userSubmissions.forEach(submission => { %>
+                    <% if(submission.test_id == test.test_id) { %> 
+                        <% filled=true %>
+                        <% if(submission.results > bestscore) {bestscore = submission.results} %>
+                    <% } %>
+                <% }) %>
+                <%= (filled?"your results: ["+bestscore+"/"+test.min_score+"], "+(bestscore>=test.min_score?"passed":"failed"):"no results yet") %>
+            </li>
+            <li>
+                your average score: <%= parseFloat(average_score.average_score).toFixed(2); %>
+            </li>
+            <li>
+                your number of attempts: <%= attempts.submission_count; %>
+            </li>
             <li>
                 <button onclick='window.location.href ="/tests/fillout/<%= test.test_id %>"'>[fill out test]</button>
                 <% if(user.role === "admin" || user.role === "teacher") { %>
