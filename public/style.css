@@ -147,10 +147,10 @@ input[type="radio"]:checked + label {
     color: #EC9A29;
 }
 
-input[type="radio"]:checked + label::before {
+/* input[type="radio"]:checked + label::before {
     content: "[";
 }
 
 input[type="radio"]:checked + label::after {
     content: "]";
-}
+} */
