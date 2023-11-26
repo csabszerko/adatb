@@ -11,6 +11,8 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    overflow: scroll;
+    max-height: 80%;
     /* position: relative; */
     display: flex;
     justify-content: center; /* Center horizontally */
@@ -114,13 +116,17 @@ div{padding: 0;}
     margin: 0;
 }
 
-.listDiv{
+.fillOutTest{
     width: 60%;
 }
 
 
 .listAll li:not(:first-child):not(:last-child) {
     margin-left: 20px; /* Adjust the margin as needed */
+}
+
+.answers{
+    margin-left: 40px !important;
 }
 
 .submissionsList li:not(:first-child){
@@ -144,8 +150,14 @@ input[type="radio"] {
     display: none;
 }
 input[type="radio"]:checked + label {
-    color: #EC9A29;
+    color: #82D173;
 }
+
+i{
+    color:#EC9A29;
+    font-style: normal;
+}
+
 
 /* input[type="radio"]:checked + label::before {
     content: "[";

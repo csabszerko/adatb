@@ -14,14 +14,14 @@
                 <% questionsInTest.forEach(question => { %>
                     <% answers=[question.answer1, question.answer2,question.answer3,question.answer4,question.answer5] %>
                     <li>
-                        [<%= question.question_text%>]<br>
-                        <div>
+                        <i>%>[<%= question.question_text%>]</i><br>
+                        <div class="answers">
                         <input type="radio" id="question<%=question.question_id%>noAnswer" name="question<%=question.question_id%>pickedAnswer" value="0" checked>
-                        <label for="question<%=question.question_id%>noAnswer">no answer</label>
+                        <label for="question<%=question.question_id%>noAnswer">no answer</label><br>
                         <% for(var i=0; i<5; i++) { %>
                             <%  if(answers[i] !== ''){ %>
                                 <input type="radio" id="question<%=question.question_id%>answer<%=i+1%>" name="question<%=question.question_id%>pickedAnswer" value="<%=i+1%>">
-                                <label for="question<%=question.question_id%>answer<%=i+1%>"><%= answers[i] %></label>
+                                <label for="question<%=question.question_id%>answer<%=i+1%>"><%= answers[i] %></label><br>
                             <% } %>
                         <% } %>
                         </div>
